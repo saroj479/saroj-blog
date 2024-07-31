@@ -11,20 +11,21 @@
   --link-color-rgb: 0, 123, 255;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background-color-rgb: 18, 18, 18;
-    --primary-text-color-rgb: 224, 224, 224;
-    --secondary-text-color-rgb: 176, 176, 176;
-    --accent-color-1-rgb: 0, 188, 212;
-    --accent-color-2-rgb: 255, 112, 67;
-    --link-color-rgb: 64, 196, 255;
-  }
-} */
+[data-theme="dark"] {
+  --background-color-rgb: 18, 18, 18;
+  --primary-text-color-rgb: 224, 224, 224;
+  --secondary-text-color-rgb: 176, 176, 176;
+  --accent-color-1-rgb: 0, 188, 212;
+  --accent-color-2-rgb: 255, 112, 67;
+  --link-color-rgb: 64, 196, 255;
+}
 
 body {
   color: rgb(var(--primary-text-color-rgb));
   background: rgb(var(--background-color-rgb));
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 @layer utilities {

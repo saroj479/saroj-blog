@@ -16,6 +16,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={inter.className}>
         <Navbar />
         <main>{children}</main>
