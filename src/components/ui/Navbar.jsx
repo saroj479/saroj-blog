@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 
 export const Navbar = () => {
   return (
-    <header className="bg-accent2-60">
+    <header>
       <Container>
         <Logo />
       </Container>
