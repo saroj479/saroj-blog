@@ -1,11 +1,8 @@
 /** @type {import('postcss-load-config').Config} */
 const config = {
-  plugins: [
-    require("tailwindcss"),
-    require("cssnano")({
-      preset: "default",
-    }),
-  ],
-}
+  plugins: {
+    tailwindcss: {},
+  },
+};
 
-export default config
+export default config;
