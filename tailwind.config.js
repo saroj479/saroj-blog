@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       maxWidth: {
-        "custom-container": "70rem",
+        "custom-container": "74rem",
       },
       colors: {
         background: "var(--background-color-rgb)",

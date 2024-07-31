@@ -1,11 +1,12 @@
 import { HeroSection } from "@/components/section";
+import { BlogSection } from "@/components/section/BlogSection";
 
 const Home = () => {
   return (
-    <section>
-      <h1 className="text-accent1-55">A personal blog</h1>
+    <>
       <HeroSection />
-    </section>
+      <BlogSection />
+    </>
   );
 };
 
