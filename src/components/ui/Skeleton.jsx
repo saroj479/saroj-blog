@@ -16,8 +16,9 @@ export const Skeleton = () => {
         </svg>
       </div>
       <div className="w-full">
-        <div className="mt-2 h-5 w-3/5 rounded-md bg-primary-20 lg:h-10"></div>
-        <div className="mt-2 h-4 w-full rounded-md bg-primary-20 lg:h-6"></div>
+        <div className="mt-2 h-5 w-3/5 rounded-md bg-primary-20 lg:h-8" />
+        <div className="mt-2 h-4 w-20 rounded-md bg-primary-20" />
+        <div className="mt-2 h-4 w-full rounded-md bg-primary-20" />
       </div>
 
       <span className="sr-only">Loading...</span>

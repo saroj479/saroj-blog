@@ -1,10 +1,8 @@
-export const createSlug = (str, separator = "-") => {
-  return str
-    ?.toString()
-    .normalize("NFD") // split an accented letter in the base letter and the acent
-    .replace(/[\u0300-\u036f]/g, "") // remove all previously split accents
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9 ]/g, "") // remove all chars not letters, numbers and spaces (to be replaced)
-    .replace(/\s+/g, separator);
+export const formatDate = (dateString) => {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  const options = { day: "numeric", month: "short", year: "numeric" };
+
+  return date.toLocaleDateString("en-US", options);
 };

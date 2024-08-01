@@ -1,28 +1,30 @@
-import { createSlug } from "@/utils/helpers";
+import { PARTIAL_BLOGS_QUERY } from "@/constants/sanity-queries";
+import { formatDate } from "@/utils/helpers";
+import { sanityFetch } from "@/utils/sanity";
 import Link from "next/link";
+import { BlogCategory } from "../BlogCategory";
 import { Container, CustomImage, Section, Skeleton } from "../ui";
 
-const BlogItem = () => {
+const BlogItem = ({ blog }) => {
   return (
     <article>
       <Link
-        href={`/blogs/${1}/${createSlug("When Business Becomes Family: Our Inspirational Startup Journey")}`}
-        as={`/blogs/${1}/${createSlug("When Business Becomes Family: Our Inspirational Startup Journey")}`}
+        href={`/blogs/${blog?.slug}`}
+        as={`/blogs/${blog?.slug}`}
+        title={blog?.title}
         className="group flex flex-col gap-2 rounded-xl border p-2 border-secondary-10 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
       >
         <CustomImage className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110" />
         <div>
-          <h3 className="animation line-clamp-2 font-bold !leading-tight group-hover:text-accent1 lg:text-lg">
-            When Business Becomes Family: Our Inspirational Startup Journey
+          <p className="text-[10px] text-secondary-80">
+            {formatDate(blog?.publishedAt)}
+          </p>
+          <h3 className="animation line-clamp-1 font-bold !leading-tight group-hover:text-accent1 lg:text-lg">
+            {blog?.title}
           </h3>
-          <p className="mt-1 text-xs text-secondary-80">26 July 2024</p>
+          <BlogCategory categories={blog?.categories} />
           <p className="mt-3 line-clamp-3 text-sm font-light md:line-clamp-4 lg:line-clamp-2">
-            They say that starting a business is like having a child. Well, let
-            me tell you, it’s true. Our startup has become our child, and we
-            have become its parents. When we embarked on this journey, it was
-            filled with excitement and a sense of adventure. We were ready to do
-            whatever it takes to make it thrive, just like new parents eagerly
-            preparing for their little one’s arrival.
+            {blog?.shortDescription}
           </p>
         </div>
       </Link>
@@ -30,13 +32,16 @@ const BlogItem = () => {
   );
 };
 
-export const BlogSection = () => {
+export const BlogSection = async () => {
+  const blogs = await sanityFetch({ query: PARTIAL_BLOGS_QUERY });
+
   return (
     <Section>
       <Container>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <BlogItem />
-          <BlogItem />
+          {blogs?.map((blog) => (
+            <BlogItem key={blog?.slug} blog={blog} />
+          ))}
           <Skeleton />
         </div>
       </Container>

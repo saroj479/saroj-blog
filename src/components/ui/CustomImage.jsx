@@ -1,22 +1,12 @@
-"use client";
-
 import { IMAGE_NOT_AVAILABLE_URL } from "@/constants";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-import { forwardRef, useState } from "react";
 
-export const CustomImage = forwardRef(function CustomImage(
-  { src = "", fallbackSrc, alt = "", className, ...rest },
-  ref
-) {
-  const [imgSrc, setImgSrc] = useState(src);
-
+export const CustomImage = ({ src = null, alt = "", className, ...rest }) => {
   return (
     <Image
-      ref={ref}
-      src={imgSrc}
+      src={src ?? IMAGE_NOT_AVAILABLE_URL}
       alt={alt}
-      onError={() => setImgSrc(IMAGE_NOT_AVAILABLE_URL)}
       height={80}
       width={100}
       style={{ height: "auto", width: "auto" }}
@@ -28,4 +18,4 @@ export const CustomImage = forwardRef(function CustomImage(
       )}
     />
   );
-});
+};
