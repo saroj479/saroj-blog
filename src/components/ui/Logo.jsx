@@ -7,7 +7,7 @@ export const Logo = () => {
       <CustomImage
         src="/assets/saroj-bartaula-logo.png"
         alt="Saroj Bartaula Blog logo"
-        className="bg-transparent"
+        className="!w-20 bg-transparent md:!w-auto"
       />
     </Link>
   );

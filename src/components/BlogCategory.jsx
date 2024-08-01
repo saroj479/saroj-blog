@@ -6,7 +6,7 @@ export const BlogCategory = ({ categories = [] }) => {
       {categories?.map((category) => (
         <div
           key={category}
-          className="text-nowrap rounded-md border px-1.5 py-0.5 text-xs border-secondary-20 text-secondary-80"
+          className="text-nowrap rounded-md border px-1.5 py-0.5 text-xs font-normal text-secondary border-secondary-20"
         >
           {category}
         </div>
