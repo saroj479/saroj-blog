@@ -5,6 +5,7 @@ import { sanityFetch, urlFor } from "@/utils/sanity";
 import Link from "next/link";
 import { BlogCategory } from "../BlogCategory";
 import { Container, CustomImage, Icon, Section } from "../ui";
+import { HighlightedSection } from "./HighlightedSection";
 
 const BlogItem = ({ blog }) => {
   return (
@@ -21,7 +22,7 @@ const BlogItem = ({ blog }) => {
           className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110"
         />
         <div>
-          <p className="flex items-center gap-1 text-[10px] text-secondary-80">
+          <p className="flex items-center gap-1 text-[10px] font-normal text-secondary">
             <Icon icon="clock" />
             {formatDate(blog?.publishedAt)}
           </p>
@@ -44,14 +45,20 @@ export const BlogSection = async () => {
   const blogs = await sanityFetch({ query: PARTIAL_BLOGS_QUERY });
 
   return (
-    <Section>
-      <Container>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {blogs?.map((blog) => (
-            <BlogItem key={blog?.slug} blog={blog} />
-          ))}
-        </div>
-      </Container>
-    </Section>
+    <>
+      <HighlightedSection blog={blogs[0]} />
+      <Section>
+        <Container>
+          <h2 className={`mb-6 text-2xl font-bold ${headingFont.className}`}>
+            Recent Blogs
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {blogs?.map((blog) => (
+              <BlogItem key={blog?.slug} blog={blog} />
+            ))}
+          </div>
+        </Container>
+      </Section>
+    </>
   );
 };

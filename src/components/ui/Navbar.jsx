@@ -6,7 +6,7 @@ import { Logo } from "./Logo";
 
 export const Navbar = () => {
   return (
-    <header>
+    <header className="sticky top-0 z-50 bg-background">
       <Container className="flex items-center justify-between">
         <Logo />
         <nav className="flex items-center gap-x-4">

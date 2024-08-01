@@ -3,7 +3,7 @@ import { Container, CustomImage, Section } from "../ui";
 
 export const HeroSection = () => {
   return (
-    <Section className="bg-accent1-5">
+    <Section>
       <Container className="flex flex-col items-center justify-evenly gap-10 sm:flex-row">
         <div>
           <div className="relative inline-block rounded-full border p-3 border-accent1-60">
