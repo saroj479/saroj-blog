@@ -13,7 +13,9 @@ export const client = createClient({
 const builder = imageUrlBuilder(client);
 
 export const urlFor = (src) => {
-  return builder.image(src);
+  if (!src) return null;
+
+  return builder.image(src).url();
 };
 
 export const sanityFetch = ({ query, params = {}, tags }) => {

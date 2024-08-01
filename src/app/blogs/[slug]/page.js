@@ -18,13 +18,12 @@ const BlogPage = async ({ params }) => {
         </h1>
         <div className="relative mb-8 mt-6 h-56 rounded-lg md:h-72 xl:-mx-14 xl:h-96">
           <CustomImage
-            src={urlFor(blog?.blogImage).url()}
+            src={urlFor(blog?.blogImage)}
+            alt={blog?.title}
             className="absolute !size-full rounded-lg shadow-sm"
           />
         </div>
-        <div className="flex flex-col items-center gap-2 text-sm md:text-base">
-          <PortableText value={blog?.content} components={RichText} />
-        </div>
+        <PortableText value={blog?.content} components={RichText} />
       </div>
     </Section>
   );
