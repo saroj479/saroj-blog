@@ -4,7 +4,7 @@ import { formatDate } from "@/utils/helpers";
 import { sanityFetch } from "@/utils/sanity";
 import Link from "next/link";
 import { BlogCategory } from "../BlogCategory";
-import { Container, CustomImage, Section } from "../ui";
+import { Container, CustomImage, Icon, Section } from "../ui";
 
 const BlogItem = ({ blog }) => {
   return (
@@ -17,7 +17,8 @@ const BlogItem = ({ blog }) => {
       >
         <CustomImage className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110" />
         <div>
-          <p className="text-[10px] text-secondary-80">
+          <p className="flex items-center gap-1 text-[10px] text-secondary-80">
+            <Icon icon="clock" />
             {formatDate(blog?.publishedAt)}
           </p>
           <h3
