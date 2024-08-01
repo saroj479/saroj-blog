@@ -1,3 +1,4 @@
+import { headingFont } from "@/app/fonts";
 import { Container, CustomImage, Section } from "../ui";
 
 export const HeroSection = () => {
@@ -16,7 +17,9 @@ export const HeroSection = () => {
           </div>
         </div>
         <div className="-mt-4">
-          <h1 className="flex flex-col font-extrabold tracking-wide">
+          <h1
+            className={`flex flex-col font-extrabold tracking-wide ${headingFont.className}`}
+          >
             <span className="font-outline-2 text-5xl text-transparent md:text-6xl">
               Hi.
             </span>

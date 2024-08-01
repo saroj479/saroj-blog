@@ -1,3 +1,4 @@
+import { headingFont } from "@/app/fonts";
 import { PARTIAL_BLOGS_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch } from "@/utils/sanity";
@@ -16,10 +17,12 @@ const BlogItem = ({ blog }) => {
       >
         <CustomImage className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110" />
         <div>
-          <p className="text-[10px] text-secondary-80">
+          <p className="text-xs text-secondary-80">
             {formatDate(blog?.publishedAt)}
           </p>
-          <h3 className="animation line-clamp-1 font-bold !leading-tight group-hover:text-accent1 lg:text-lg">
+          <h3
+            className={`animation line-clamp-1 font-bold !leading-tight group-hover:text-accent1 lg:text-lg ${headingFont.className}`}
+          >
             {blog?.title}
           </h3>
           <BlogCategory categories={blog?.categories} />
