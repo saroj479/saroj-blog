@@ -12,7 +12,12 @@ export const Navbar = () => {
         <nav className="flex items-center gap-x-4">
           <ul>
             <li>
-              <Link href={`/`}>Blog</Link>
+              <Link
+                href={`/`}
+                className="animation underline-offset-0 hover:text-accent1 hover:underline hover:underline-offset-4"
+              >
+                Blog
+              </Link>
             </li>
           </ul>
           <ThemeToggle />

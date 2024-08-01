@@ -4,7 +4,7 @@ import { formatDate } from "@/utils/helpers";
 import { sanityFetch } from "@/utils/sanity";
 import Link from "next/link";
 import { BlogCategory } from "../BlogCategory";
-import { Container, CustomImage, Section, Skeleton } from "../ui";
+import { Container, CustomImage, Section } from "../ui";
 
 const BlogItem = ({ blog }) => {
   return (
@@ -13,11 +13,11 @@ const BlogItem = ({ blog }) => {
         href={`/blogs/${blog?.slug}`}
         as={`/blogs/${blog?.slug}`}
         title={blog?.title}
-        className="group flex flex-col gap-2 rounded-xl border p-2 border-secondary-10 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
+        className="group flex flex-col gap-2 overflow-hidden rounded-xl border p-2 border-secondary-10 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
       >
         <CustomImage className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110" />
         <div>
-          <p className="text-xs text-secondary-80">
+          <p className="text-[10px] text-secondary-80">
             {formatDate(blog?.publishedAt)}
           </p>
           <h3
@@ -45,7 +45,6 @@ export const BlogSection = async () => {
           {blogs?.map((blog) => (
             <BlogItem key={blog?.slug} blog={blog} />
           ))}
-          <Skeleton />
         </div>
       </Container>
     </Section>
