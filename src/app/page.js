@@ -1,5 +1,13 @@
+import { HeroSection } from "@/components/section";
+import { BlogSection } from "@/components/section/BlogSection";
+
 const Home = () => {
-  return <h1 className="text-accent1-55">A personal blog</h1>;
+  return (
+    <>
+      <HeroSection />
+      <BlogSection />
+    </>
+  );
 };
 
 export default Home;
