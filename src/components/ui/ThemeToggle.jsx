@@ -1,35 +1,31 @@
-/* eslint-disable react/display-name */
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { Icon } from "./Icon";
 
-export const ThemeToggle = memo(() => {
-  const [theme, setTheme] = useState("light");
+export const ThemeToggle = () => {
+  const [mounted, setMounted] = useState(false);
+  const { setTheme, resolvedTheme } = useTheme();
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    setTheme(savedTheme);
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  const handleToggle = () => {
-    setTheme((prevTheme) => {
-      const newTheme = prevTheme === "light" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", newTheme);
-      localStorage.setItem("theme", newTheme); // Save the new theme
-      return newTheme;
-    });
+  if (!mounted) return <div className="rounded p-4 bg-accent1-10" />;
+
+  const handleThemeToggle = () => {
+    if (resolvedTheme === "light") return setTheme("dark");
+    return setTheme("light");
   };
 
   return (
     <button
-      onClick={handleToggle}
-      aria-label={
-        theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"
-      }
-      className="rounded bg-gray-200 p-2 dark:bg-gray-700"
+      onClick={handleThemeToggle}
+      aria-label={`Switch to ${resolvedTheme === "light" ? "Dark" : "Light"} mode`}
+      title={`Switch to ${resolvedTheme === "light" ? "Dark" : "Light"} mode`}
+      className="rounded p-2 bg-accent1-10"
     >
-      {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+      {resolvedTheme === "light" && <Icon icon="light-mode" />}
+      {resolvedTheme === "dark" && <Icon icon="dark-mode" />}
     </button>
   );
-});
+};

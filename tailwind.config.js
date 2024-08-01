@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -36,6 +37,7 @@ module.exports = {
         const classNameBgDefault = `bg-${e(colorKey)}`;
         const classNameTextDefault = `text-${e(colorKey)}`;
         const classNameBorderDefault = `border-${e(colorKey)}`;
+        const classNameFillDefault = `fill-${e(colorKey)}`;
 
         newUtilities[`.${classNameBgDefault}`] = {
           backgroundColor: `rgb(${color})`, // Full opacity
@@ -46,6 +48,9 @@ module.exports = {
         newUtilities[`.${classNameBorderDefault}`] = {
           borderColor: `rgb(${color})`, // Full opacity
         };
+        newUtilities[`.${classNameFillDefault}`] = {
+          fill: `rgb(${color})`, // Full opacity
+        };
 
         // Generate classes for alpha values
         alphas.forEach((alpha) => {
@@ -53,6 +58,7 @@ module.exports = {
           const classNameBg = `bg-${e(`${colorKey}-${alphaValue}`)}`;
           const classNameText = `text-${e(`${colorKey}-${alphaValue}`)}`;
           const classNameBorder = `border-${e(`${colorKey}-${alphaValue}`)}`;
+          const classNameFill = `fill-${e(`${colorKey}-${alphaValue}`)}`;
 
           newUtilities[`.${classNameBg}`] = {
             backgroundColor: `rgba(${color}, ${alpha})`,
@@ -62,6 +68,9 @@ module.exports = {
           };
           newUtilities[`.${classNameBorder}`] = {
             borderColor: `rgba(${color}, ${alpha})`,
+          };
+          newUtilities[`.${classNameFill}`] = {
+            fill: `rgba(${color}, ${alpha})`,
           };
         });
       });

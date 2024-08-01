@@ -13,7 +13,7 @@
   --link-color-rgb: 0, 123, 255;
 }
 
-[data-theme="dark"] {
+.dark {
   --background-color-rgb: 18, 18, 18;
   --primary-text-color-rgb: 224, 224, 224;
   --secondary-text-color-rgb: 176, 176, 176;

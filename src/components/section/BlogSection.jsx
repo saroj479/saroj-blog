@@ -7,6 +7,7 @@ const BlogItem = () => {
     <article>
       <Link
         href={`/blogs/${1}/${createSlug("When Business Becomes Family: Our Inspirational Startup Journey")}`}
+        as={`/blogs/${1}/${createSlug("When Business Becomes Family: Our Inspirational Startup Journey")}`}
         className="group flex flex-col gap-2 rounded-xl border p-2 border-secondary-10 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
       >
         <CustomImage className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110" />
