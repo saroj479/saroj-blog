@@ -13,15 +13,15 @@ const BlogPage = async ({ params }) => {
   return (
     <Section>
       <div className="mx-auto max-w-3xl">
-        <h1
-          className={`text-balance text-2xl font-extrabold md:text-4xl ${headingFont.className}`}
-        >
-          {blog?.title}
-        </h1>
-        <p className="my-3 flex items-center gap-1 text-sm text-secondary">
+        <p className="flex items-center gap-1 text-sm text-secondary">
           <Icon icon="clock" />
           {formatDate(blog?.publishedAt)}
         </p>
+        <h1
+          className={`mb-4 mt-3 text-balance text-2xl font-extrabold md:text-4xl ${headingFont.className}`}
+        >
+          {blog?.title}
+        </h1>
         <BlogCategory categories={blog?.categories} size="lg" />
         <div className="relative mb-8 mt-6 h-56 rounded-lg md:h-72 xl:-mx-14 xl:h-96">
           <CustomImage

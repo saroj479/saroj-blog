@@ -7,10 +7,12 @@ export const CustomImage = ({ src = null, alt = "", className, ...rest }) => {
     <Image
       src={src ?? IMAGE_NOT_AVAILABLE_URL}
       alt={alt}
-      height={80}
-      width={100}
+      height={500}
+      width={500}
       style={{ height: "auto", width: "auto" }}
       priority
+      quality={100}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       {...rest}
       className={cn(
         "text-xs object-cover object-center bg-accent1-10",
