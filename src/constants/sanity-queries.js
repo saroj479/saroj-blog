@@ -4,4 +4,4 @@ export const BLOGS_QUERY = `*[_type == "blog"]{_id, title, 'slug': slug.current,
 
 export const PARTIAL_BLOGS_QUERY = `*[_type == "blog"]{title, 'slug': slug.current, shortDescription, blogImage, 'categories': categories[]->title, publishedAt} | order(_createdAt desc)`;
 
-export const BLOG_QUERY = `*[_type == "blog" && slug.current == $slug][0]{..., shortDescription}`;
+export const BLOG_QUERY = `*[_type == "blog" && slug.current == $slug][0]{..., 'categories': categories[]->title, shortDescription}`;

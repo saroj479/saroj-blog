@@ -19,10 +19,10 @@ const BlogItem = ({ blog }) => {
         <CustomImage
           src={urlFor(blog?.blogImage)}
           alt={blog?.title}
-          className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110"
+          className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-105"
         />
         <div>
-          <p className="flex items-center gap-1 text-[10px] font-normal text-secondary">
+          <p className="mb-1 flex items-center gap-x-1 text-xs font-normal text-secondary">
             <Icon icon="clock" />
             {formatDate(blog?.publishedAt)}
           </p>
@@ -32,7 +32,7 @@ const BlogItem = ({ blog }) => {
             {blog?.title}
           </h3>
           <BlogCategory categories={blog?.categories} />
-          <p className="mt-3 line-clamp-3 text-sm font-light md:line-clamp-4 lg:line-clamp-2">
+          <p className="mt-3 line-clamp-3 text-sm font-normal text-secondary md:line-clamp-4 lg:line-clamp-2">
             {blog?.shortDescription}
           </p>
         </div>
@@ -46,7 +46,7 @@ export const BlogSection = async () => {
 
   return (
     <>
-      <HighlightedSection blog={blogs[0]} />
+      <HighlightedSection blog={blogs[1]} />
       <Section>
         <Container>
           <h2 className={`mb-6 text-2xl font-bold ${headingFont.className}`}>
