@@ -11,7 +11,7 @@ export const HighlightedSection = ({ blog }) => {
       <Container>
         <article className="mx-auto flex h-auto max-w-3xl flex-col gap-2 overflow-hidden sm:flex-row sm:items-center sm:gap-4 lg:justify-between">
           <div className="order-2 lg:order-1">
-            <p className="flex items-center gap-1 text-xs font-normal text-secondary">
+            <p className="flex items-center gap-1 text-xs text-secondary">
               <Icon icon="clock" />
               {formatDate(blog?.publishedAt)}
             </p>
@@ -21,7 +21,9 @@ export const HighlightedSection = ({ blog }) => {
               {blog?.title}
             </div>
             <BlogCategory categories={blog?.categories} />
-            <p className="mt-3 text-sm font-light">{blog?.shortDescription}</p>
+            <p className="mt-3 text-sm text-secondary">
+              {blog?.shortDescription}
+            </p>
             <Link
               href={`/blogs/${blog?.slug}`}
               className="animation mt-6 inline-block rounded-lg border px-4 py-2 font-medium text-accent1 bg-accent1-10 border-accent1-80 hover:border-accent1 hover:bg-accent1 hover:text-background"

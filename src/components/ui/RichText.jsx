@@ -32,7 +32,7 @@ export const RichText = {
       </blockquote>
     ),
     p: ({ children }) => (
-      <p className="mt-6 text-sm font-normal lg:text-base">{children}</p>
+      <p className="mt-6 text-sm lg:text-base">{children}</p>
     ),
   },
   marks: {

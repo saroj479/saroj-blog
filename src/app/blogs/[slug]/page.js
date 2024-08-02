@@ -18,7 +18,7 @@ const BlogPage = async ({ params }) => {
         >
           {blog?.title}
         </h1>
-        <p className="my-3 flex items-center gap-1 text-sm font-normal text-secondary">
+        <p className="my-3 flex items-center gap-1 text-sm text-secondary">
           <Icon icon="clock" />
           {formatDate(blog?.publishedAt)}
         </p>

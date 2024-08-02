@@ -23,7 +23,6 @@
 }
 
 body {
-  font-weight: 300;
   color: rgb(var(--primary-text-color-rgb));
   background: rgb(var(--background-color-rgb));
   transition:

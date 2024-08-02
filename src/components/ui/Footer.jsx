@@ -10,7 +10,7 @@ export const Footer = () => {
         </div>
         <SocialButtons />
       </Container>
-      <Container className="rounded-t-2xl py-1 text-center font-normal bg-accent1-40">
+      <Container className="rounded-t-2xl py-1 text-center bg-accent1-40">
         <span className="text-sm">Copyright &copy; 2024. Saroj Bartaula.</span>
       </Container>
     </footer>
