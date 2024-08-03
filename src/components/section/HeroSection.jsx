@@ -3,13 +3,16 @@ import { Container, CustomImage, Section } from "../ui";
 
 export const HeroSection = () => {
   return (
-    <Section>
-      <Container className="flex flex-col items-center justify-evenly gap-10 sm:flex-row">
+    <Section className="relative">
+      <div className="absolute inset-y-0 left-0 hidden w-1/3 bg-fixed bg-blend-multiply !bg-accent1-80 md:block" />
+      <div className="absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-l from-[rgba(var(--background-color-rgb),1)] backdrop-blur-3xl md:block" />
+      <Container className="relative flex flex-col items-center justify-evenly gap-10 sm:flex-row">
         <div>
-          <div className="relative inline-block rounded-full border p-3 border-accent1-60">
+          <div className="relative inline-block min-w-72 rounded-full border p-3 bg-background-50 border-accent1-60">
             <CustomImage
               src="/assets/saroj-bartaula.webp"
-              className="relative z-20 !w-72 rounded-full bg-secondary"
+              alt="Saroj Bartaula"
+              className="relative z-20 !h-72 !w-72 rounded-full bg-secondary"
             />
             <div className="absolute -left-4 top-1/3 h-32 w-40 -rotate-45 rounded-full bg-accent1" />
             <div className="absolute right-16 top-2 size-6 rounded-full bg-accent1" />
