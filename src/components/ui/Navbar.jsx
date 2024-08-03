@@ -14,7 +14,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href={`/`}
-                className="animation underline-offset-0 hover:text-accent1 hover:underline hover:underline-offset-4"
+                className="animation tracking-wide underline-offset-0 hover:text-accent1 hover:underline hover:underline-offset-4"
               >
                 Blog
               </Link>

@@ -1,15 +1,19 @@
-export const BlogCategory = ({ categories = [] }) => {
+import Link from "next/link";
+
+export const BlogCategory = ({ categories = [], size = "sm" }) => {
   if (!categories.length) return null;
 
   return (
-    <div className="relative z-10 mt-1 flex flex-wrap justify-start gap-1">
+    <div className="mt-1.5 flex flex-wrap justify-start gap-1">
       {categories?.map((category) => (
-        <div
+        <Link
+          href={`/`}
           key={category}
-          className="text-nowrap rounded-md border px-1.5 py-0.5 text-xs font-normal text-secondary border-secondary-20"
+          title={category}
+          className={`cursor-pointer text-nowrap rounded-md text-secondary bg-secondary-10 hover:text-accent1 hover:bg-accent1-10 ${size === "lg" ? "px-3 py-1 text-sm" : "px-1.5 py-0.5 text-xs"}`}
         >
           {category}
-        </div>
+        </Link>
       ))}
     </div>
   );

@@ -14,25 +14,25 @@ const BlogItem = ({ blog }) => {
         href={`/blogs/${blog?.slug}`}
         as={`/blogs/${blog?.slug}`}
         title={blog?.title}
-        className="group flex flex-col gap-2 overflow-hidden rounded-xl border p-2 border-secondary-10 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
+        className="animation flex flex-col gap-2 overflow-hidden rounded-xl border p-2 border-secondary-10 hover:bg-secondary-5 md:p-4 lg:flex-row lg:items-center lg:justify-between lg:gap-4"
       >
         <CustomImage
           src={urlFor(blog?.blogImage)}
           alt={blog?.title}
-          className="lg:animation !h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40 lg:group-hover:scale-110"
+          className="!h-40 !w-full overflow-hidden rounded-lg md:!h-48 lg:!h-32 lg:!w-40 lg:!min-w-40"
         />
         <div>
-          <p className="flex items-center gap-1 text-[10px] font-normal text-secondary">
+          <p className="mb-1 flex items-center gap-x-1 text-xs text-secondary">
             <Icon icon="clock" />
             {formatDate(blog?.publishedAt)}
           </p>
           <h3
-            className={`animation line-clamp-1 font-bold !leading-tight group-hover:text-accent1 lg:text-lg ${headingFont.className}`}
+            className={`line-clamp-1 font-bold !leading-tight lg:text-lg ${headingFont.className}`}
           >
             {blog?.title}
           </h3>
           <BlogCategory categories={blog?.categories} />
-          <p className="mt-3 line-clamp-3 text-sm font-light md:line-clamp-4 lg:line-clamp-2">
+          <p className="mt-3 line-clamp-3 text-sm text-secondary md:line-clamp-4 lg:line-clamp-2">
             {blog?.shortDescription}
           </p>
         </div>
@@ -46,7 +46,7 @@ export const BlogSection = async () => {
 
   return (
     <>
-      <HighlightedSection blog={blogs[0]} />
+      <HighlightedSection blog={blogs[1]} />
       <Section>
         <Container>
           <h2 className={`mb-6 text-2xl font-bold ${headingFont.className}`}>

@@ -31,7 +31,9 @@ export const RichText = {
         {children}
       </blockquote>
     ),
-    p: ({ children }) => <p className="mt-4 text-xs lg:text-sm">{children}</p>,
+    p: ({ children }) => (
+      <p className="mt-6 text-sm lg:text-base">{children}</p>
+    ),
   },
   marks: {
     link: ({ children, value }) => {
