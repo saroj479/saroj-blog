@@ -7,7 +7,7 @@ import { BlogCategory } from "../BlogCategory";
 import { Container, CustomImage, Icon, Section } from "../ui";
 import { HighlightedSection } from "./HighlightedSection";
 
-const BlogItem = ({ blog }) => {
+export const BlogItem = ({ blog }) => {
   return (
     <article>
       <Link

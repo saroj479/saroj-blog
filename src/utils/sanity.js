@@ -1,5 +1,3 @@
-import "server-only";
-
 import imageUrlBuilder from "@sanity/image-url";
 import { createClient } from "next-sanity";
 
