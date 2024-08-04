@@ -10,6 +10,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@portabletext/react": "^3.1.0",
     "@sanity/image-url": "^1.0.2",
     "class-variance-authority": "^0.7.0",
@@ -20,8 +21,10 @@
     "next": "14.2.5",
     "next-sanity": "^9.4.3",
     "next-themes": "^0.3.0",
+    "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
+    "react-toastify": "^10.0.5",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.4.0"
   },
