@@ -1,5 +1,7 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { bodyFont } from "./fonts";
 import "./globals.css";
 
@@ -14,8 +16,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={bodyFont.className}>
+        <ToastContainer />
         <Theme>
           <Navbar />
           <main>{children}</main>
