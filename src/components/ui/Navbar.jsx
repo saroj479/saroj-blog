@@ -13,10 +13,10 @@ export const Navbar = () => {
           <ul>
             <li>
               <Link
-                href={`/`}
+                href={`/blogs`}
                 className="animation tracking-wide underline-offset-0 hover:text-accent1 hover:underline hover:underline-offset-4"
               >
-                Blog
+                Blogs
               </Link>
             </li>
           </ul>

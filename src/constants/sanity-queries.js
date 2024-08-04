@@ -5,3 +5,5 @@ export const BLOGS_QUERY = `*[_type == "blog"]{_id, title, 'slug': slug.current,
 export const PARTIAL_BLOGS_QUERY = `*[_type == "blog"]{title, 'slug': slug.current, shortDescription, blogImage, 'categories': categories[]->title, publishedAt} | order(_createdAt desc)`;
 
 export const BLOG_QUERY = `*[_type == "blog" && slug.current == $slug][0]{..., 'categories': categories[]->title, shortDescription}`;
+
+export const BLOG_BY_CATEGORY_QUERY = `*[_type == "blog" && categories[]->title match $category]{..., 'categories': categories[]->title, shortDescription}`;
