@@ -1,5 +1,6 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
+import { Analytics } from '@vercel/analytics/react';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { bodyFont } from "./fonts";
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         <Theme>
           <Navbar />
           <main>{children}</main>
+          <Analytics />
           <Footer />
         </Theme>
       </body>
