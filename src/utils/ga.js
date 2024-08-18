@@ -1,5 +1,5 @@
 import { initGA, logPageView } from 'next-ga';
-import { useRouter } from 'next/router';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID; // Ensure this environment variable is correct
@@ -9,18 +9,13 @@ export const initAnalytics = () => {
 };
 
 export const PageView = () => {
-  const router = useRouter();
-  
-  useEffect(() => {
-    const handleRouteChange = (url) => {
-      logPageView(url);
-    };
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
+  useEffect(() => {
+    const url = pathname + searchParams.toString();
+    logPageView(url);
+  }, [pathname, searchParams]);
 
   return null;
 };

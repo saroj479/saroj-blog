@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main>{children}</main>
           <Analytics />
-          <PageView />
+          <PageView /> {/* Ensure this is in a client-side context */}
           <Footer />
         </Theme>
       </body>
