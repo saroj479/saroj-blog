@@ -1,5 +1,6 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
+import { PageView } from "@/utils/ga";
 import { Analytics } from '@vercel/analytics/react';
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main>{children}</main>
           <Analytics />
+          <PageView/>
           <Footer />
         </Theme>
       </body>
