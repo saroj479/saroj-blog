@@ -3,7 +3,7 @@ import { initGA, logPageView } from 'next-ga';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const GA_TRACKING_ID = 'G-M2WCZGM2EX'; // Replace with your GA ID
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GTM_ID; // Replace with your environment variable
 
 export const initAnalytics = () => {
   initGA(GA_TRACKING_ID);
@@ -19,6 +19,7 @@ export const PageView = () => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events]);   
+
   return null;
 };
