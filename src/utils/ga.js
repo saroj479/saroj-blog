@@ -1,3 +1,6 @@
+// src/utils/ga.js
+"use client";
+
 import { initGA, logPageView } from 'next-ga';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -19,3 +22,4 @@ export const PageView = () => {
 
   return null;
 };
+
