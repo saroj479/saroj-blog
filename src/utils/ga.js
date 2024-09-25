@@ -1,14 +1,14 @@
-// src/utils/ga.js
 "use client";
 
-import { initGA, logPageView } from 'next-ga';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import ReactGA from 'react-ga4';
 
-const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID; // Ensure this environment variable is correct
+// Hardcode the GA tracking ID for testing or use environment variables
+const GA_TRACKING_ID = 'G-M2WCZGM2EX'; // Replace with your actual GA tracking ID
 
 export const initAnalytics = () => {
-  initGA(GA_TRACKING_ID);
+  ReactGA.initialize(GA_TRACKING_ID);
 };
 
 export const PageView = () => {
@@ -17,9 +17,8 @@ export const PageView = () => {
 
   useEffect(() => {
     const url = pathname + searchParams.toString();
-    logPageView(url);
+    ReactGA.send({ hitType: "pageview", page: url });
   }, [pathname, searchParams]);
 
   return null;
 };
-

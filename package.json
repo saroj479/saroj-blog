@@ -25,6 +25,8 @@
     "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
+    "react-ga4": "^2.1.0",
+    "react-gtm-module": "^2.0.11",
     "react-toastify": "^10.0.5",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.4.0"
