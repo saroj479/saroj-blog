@@ -1,15 +1,13 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
-import { PageView } from "@/utils/ga"; // Google Analytics page view tracking
-import { Analytics } from "@vercel/analytics/react"; // Vercel Analytics
+import { Analytics } from '@vercel/analytics/react';
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { bodyFont } from "./fonts";
 import "./globals.css";
 
-// Hardcoded GTM ID for testing without .env
-const GTM_ID = "GTM-XXXXXXX"; // Replace with your actual GTM ID
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export const metadata = {
   title: {
@@ -24,7 +22,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* Google Tag Manager Script */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
@@ -53,7 +50,6 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main>{children}</main>
           <Analytics />
-          <PageView /> {/* Ensure this is in a client-side context */}
           <Footer />
         </Theme>
       </body>
