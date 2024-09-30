@@ -1,12 +1,12 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { bodyFont } from "./fonts";
 import "./globals.css";
-
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 export const metadata = {
@@ -49,6 +49,7 @@ export default function RootLayout({ children }) {
         <Theme>
           <Navbar />
           <main>{children}</main>
+          <SpeedInsights />
           <Analytics />
           <Footer />
         </Theme>
