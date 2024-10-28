@@ -30,7 +30,7 @@ export const HeroSection = () => {
               I&apos;m Saroj <span className="text-accent1">Bartaula</span>
             </span>
           </h1>
-          <p className="mt-2 font-medium xl:text-lg">AI/ML Engineer</p>
+          <p className="mt-2 font-medium xl:text-lg">I live in the Milky Way galaxy</p>
           <p className="mt-4 max-w-sm text-balance text-sm text-secondary xl:text-base">
             I&apos;m on a journey to create my own story. Along the way,
             I&apos;ve tried various things and will continue to do so. My focus
