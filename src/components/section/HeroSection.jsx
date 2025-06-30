@@ -30,11 +30,11 @@ export const HeroSection = () => {
               I&apos;m Saroj <span className="text-accent1">Bartaula</span>
             </span>
           </h1>
-          <p className="mt-2 font-medium xl:text-lg">I live in the Milky Way galaxy</p>
+          <p className="mt-2 font-medium xl:text-lg">Ideas in Motion</p>
           <p className="mt-4 max-w-sm text-balance text-sm text-secondary xl:text-base">
-            I&apos;m on a journey to create my own story. Along the way,
-            I&apos;ve tried various things and will continue to do so. My focus
-            is on learning and building something that humanity will cherish.
+            Hi,I&apos;m Saroj.I live in the Milky Way galaxy.Driven by curiosity,
+            i explore the worlds of technology,storytelling and science.
+            Here, I share what i learn and create in the hope of inspiring others to see the world a little differently.
           </p>
         </div>
       </Container>

@@ -21,6 +21,11 @@ export const Navbar = () => {
             </li>
           </ul>
           <ThemeToggle />
+          <Link href="/buy-me-a-coffee">
+            <button className="ml-4 rounded bg-yellow-400 px-4 py-2 font-semibold text-black transition hover:bg-yellow-500">
+              Buy Me a Coffee
+            </button>
+          </Link>
         </nav>
       </Container>
     </header>

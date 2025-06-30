@@ -102,3 +102,14 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
+
+## Stripe Setup
+
+Create a `.env` file in your project root with the following:
+
+```
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_BASE_URL=https://yourdomain.com  # or http://localhost:3000 for local
+```
+
+Replace `sk_test_...` with your Stripe secret key. The base URL should match your deployment or local dev URL.
