@@ -1,13 +1,15 @@
 import { Footer, Navbar } from "@/components/ui";
 import Theme from "@/providers/ThemeProvider";
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react'; // Vercel Analytics
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { bodyFont } from "./fonts";
 import "./globals.css";
+
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const metadata = {
   title: {
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Google Tag Manager */}
         <Script
           id="gtm-script"
           strategy="afterInteractive"
@@ -35,6 +38,28 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* Google Analytics via GTM */}
+        {GA_ID && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
       </head>
       <body className={bodyFont.className}>
         <noscript
@@ -50,7 +75,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main>{children}</main>
           <SpeedInsights />
-          <Analytics />
+          <Analytics /> {/* Vercel Analytics */}
           <Footer />
         </Theme>
       </body>
