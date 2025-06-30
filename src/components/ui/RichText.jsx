@@ -8,7 +8,6 @@ export const RichText = {
       return (
         <div className="my-4">
           <div className="h-44 rounded-lg sm:h-48">
-            {console.log({ value })}
             <CustomImage
               src={urlFor(value)}
               alt={value.alt}
