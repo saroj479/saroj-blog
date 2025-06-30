@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     remotePatterns: [{ hostname: "cdn.sanity.io" }],
+    domains: ['images.unsplash.com'],
   },
 };
 
