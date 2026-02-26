@@ -1,12 +1,12 @@
 /* eslint-disable tailwindcss/no-custom-classname */
 import Link from "next/link";
-import { ThemeToggle } from ".";
+import { LanguageSwitcher, ThemeToggle } from ".";
 import { Container } from "./Container";
 import { Logo } from "./Logo";
 
 export const Navbar = () => {
   return (
-    <header className="sticky top-0 z-50 bg-background">
+    <header className="sticky top-0 z-50 bg-background will-change-transform">
       <Container className="flex items-center justify-between">
         <Logo />
         <nav className="flex items-center gap-x-4">
@@ -20,6 +20,7 @@ export const Navbar = () => {
               </Link>
             </li>
           </ul>
+          <LanguageSwitcher />
           <ThemeToggle />
           <a
             href="https://milkywaymarket.shop/"

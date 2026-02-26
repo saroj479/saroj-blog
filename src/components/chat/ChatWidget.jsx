@@ -89,7 +89,7 @@ export function ChatWidget() {
         className={cn(
           'fixed bottom-4 right-4 z-50 size-12 rounded-full shadow-lg transition-all duration-300 md:bottom-6 md:right-6 md:size-14',
           'flex items-center justify-center bg-white',
-          'animate-bounce hover:scale-110 hover:animate-none hover:shadow-xl',
+          'hover:scale-110 hover:shadow-xl',
           'border-2 border-primary/20'
         )}
         aria-label="Open chat"
@@ -100,7 +100,6 @@ export function ChatWidget() {
           width={48}
           height={48}
           className="size-8 object-contain md:size-10"
-          priority
         />
         
         {/* Notification badge */}
@@ -134,7 +133,6 @@ export function ChatWidget() {
                 width={40}
                 height={40}
                 className="size-full object-contain"
-                priority
               />
             </div>
             <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full border border-white bg-green-400 md:size-2.5"></span>

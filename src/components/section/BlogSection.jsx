@@ -1,4 +1,5 @@
 import { headingFont } from "@/app/fonts";
+import { T } from "@/components/T";
 import { PARTIAL_BLOGS_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch, urlFor } from "@/utils/sanity";
@@ -50,7 +51,7 @@ export const BlogSection = async () => {
       <Section>
         <Container>
           <h2 className={`mb-6 text-2xl font-bold ${headingFont.className}`}>
-            Recent Blogs
+            <T k="blog.recentBlogs" fallback="Recent Blogs" />
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {blogs?.map((blog) => (

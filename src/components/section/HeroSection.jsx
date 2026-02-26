@@ -1,4 +1,5 @@
 import { headingFont } from "@/app/fonts";
+import { T } from "@/components/T";
 import { Container, CustomImage, Section } from "../ui";
 
 export const HeroSection = () => {
@@ -12,6 +13,7 @@ export const HeroSection = () => {
             <CustomImage
               src="/assets/saroj-bartaula.webp"
               alt="Saroj Bartaula"
+              priority
               className="relative z-20 !h-72 !w-72 rounded-full bg-secondary"
             />
             <div className="absolute -left-4 top-1/3 h-32 w-40 -rotate-45 rounded-full bg-accent1" />
@@ -23,19 +25,29 @@ export const HeroSection = () => {
           <h1
             className={`flex flex-col font-extrabold tracking-wide ${headingFont.className}`}
           >
-            <span className="font-outline-2 text-5xl text-transparent md:text-6xl">
-              Hi.
-            </span>
+            <T
+              k="hero.greeting"
+              fallback="Hi."
+              as="span"
+              className="font-outline-2 text-5xl text-transparent md:text-6xl"
+            />
             <span className="text-3xl md:text-4xl">
-              I&apos;m Saroj <span className="text-accent1">Bartaula</span>
+              <T k="hero.name" fallback="I'm Saroj" />{" "}
+              <span className="text-accent1">Bartaula</span>
             </span>
           </h1>
-          <p className="mt-2 font-medium xl:text-lg">Ideas in Motion</p>
-          <p className="mt-4 max-w-sm text-balance text-sm text-secondary xl:text-base">
-            Hi,I&apos;m Saroj.I live in the Milky Way galaxy.Driven by curiosity,
-            i explore the worlds of technology,storytelling and science.
-            Here, I share what i learn and create in the hope of inspiring others to see the world a little differently.
-          </p>
+          <T
+            k="hero.tagline"
+            fallback="Ideas in Motion"
+            as="p"
+            className="mt-2 font-medium xl:text-lg"
+          />
+          <T
+            k="hero.description"
+            fallback="Hi, I'm Saroj. I live in the Milky Way galaxy. Driven by curiosity, I explore the worlds of technology, storytelling and science. Here, I share what I learn and create in the hope of inspiring others to see the world a little differently."
+            as="p"
+            className="mt-4 max-w-sm text-balance text-sm text-secondary xl:text-base"
+          />
         </div>
       </Container>
     </Section>

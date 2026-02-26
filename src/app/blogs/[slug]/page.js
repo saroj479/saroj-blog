@@ -1,11 +1,10 @@
 import { headingFont } from "@/app/fonts";
 import { BlogCategory } from "@/components/BlogCategory";
-import { CustomImage, Icon, Section } from "@/components/ui";
-import { RichText } from "@/components/ui/RichText";
+import { TranslatedBlogContent } from "@/components/TranslatedBlogContent";
+import { CustomImage, Icon, ListenButton, Section } from "@/components/ui";
 import { BLOG_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch, urlFor } from "@/utils/sanity";
-import { PortableText } from "@portabletext/react";
 
 const BlogPage = async ({ params }) => {
   const blog = await sanityFetch({ query: BLOG_QUERY, params });
@@ -30,9 +29,12 @@ const BlogPage = async ({ params }) => {
             className="absolute !size-full rounded-lg shadow-sm"
           />
         </div>
-        <article className="space-y-0">
-          <PortableText value={blog?.content} components={RichText} />
-        </article>
+        <ListenButton content={blog?.content} />
+        <TranslatedBlogContent
+          content={blog?.content}
+          slug={params.slug}
+          title={blog?.title}
+        />
       </div>
     </Section>
   );
