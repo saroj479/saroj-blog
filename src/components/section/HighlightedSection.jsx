@@ -1,4 +1,6 @@
 import { headingFont } from "@/app/fonts";
+import { T } from "@/components/T";
+import { TranslatedText } from "@/components/TranslatedText";
 import { formatDate } from "@/utils/helpers";
 import { urlFor } from "@/utils/sanity";
 import Link from "next/link";
@@ -18,17 +20,17 @@ export const HighlightedSection = ({ blog }) => {
             <div
               className={`text-xl font-bold !leading-tight ${headingFont.className}`}
             >
-              {blog?.title}
+              <TranslatedText text={blog?.title} />
             </div>
             <BlogCategory categories={blog?.categories} />
             <p className="mt-3 text-sm text-secondary sm:line-clamp-3">
-              {blog?.shortDescription}
+              <TranslatedText text={blog?.shortDescription} />
             </p>
             <Link
               href={`/blogs/${blog?.slug}`}
               className="animation mt-6 inline-block rounded-lg border px-4 py-2 font-medium text-accent1 bg-accent1-10 border-accent1-80 hover:border-accent1 hover:bg-accent1 hover:text-background"
             >
-              Explore more
+              <T k="blog.exploreMore" fallback="Explore more" />
             </Link>
           </div>
           <CustomImage

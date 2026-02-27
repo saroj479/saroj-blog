@@ -1,4 +1,5 @@
 import { CustomImage } from "@/components/ui/CustomImage";
+import { cleanTextChildren } from "@/utils/helpers";
 import { urlFor } from "@/utils/sanity";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
@@ -20,19 +21,19 @@ export const PortableTextRenderer = ({ value }) => {
   const components = {
     block: {
       h1: ({ children }) => (
-        <h1 className="mb-4 text-3xl font-bold leading-tight">{children}</h1>
+        <h1 className="mb-4 text-3xl font-bold leading-tight">{cleanTextChildren(children)}</h1>
       ),
       h2: ({ children }) => (
-        <h2 className="mb-3 text-2xl font-semibold leading-tight">{children}</h2>
+        <h2 className="mb-3 text-2xl font-semibold leading-tight">{cleanTextChildren(children)}</h2>
       ),
       h3: ({ children }) => (
-        <h3 className="mb-2 text-xl font-medium">{children}</h3>
+        <h3 className="mb-2 text-xl font-medium">{cleanTextChildren(children)}</h3>
       ),
       normal: ({ children }) => (
-        <p className="mb-4 text-base leading-7 text-secondary">{children}</p>
+        <p className="mb-4 text-base leading-7 text-secondary">{cleanTextChildren(children)}</p>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="my-4 border-l-2 pl-4 italic text-secondary">{children}</blockquote>
+        <blockquote className="my-4 border-l-2 pl-4 italic text-secondary">{cleanTextChildren(children)}</blockquote>
       ),
     },
     list: {

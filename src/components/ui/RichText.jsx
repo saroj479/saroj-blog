@@ -1,3 +1,4 @@
+import { cleanTextChildren } from "@/utils/helpers";
 import { urlFor } from "@/utils/sanity";
 import Link from "next/link";
 import { CustomImage, Icon } from ".";
@@ -32,32 +33,32 @@ export const RichText = {
   block: {
     h1: ({ children }) => (
       <h1 className="mb-4 mt-8 text-2xl font-bold leading-tight md:text-3xl">
-        {children}
+        {cleanTextChildren(children)}
       </h1>
     ),
     h2: ({ children }) => (
       <h2 className="mb-3 mt-8 text-xl font-semibold leading-tight md:text-2xl">
-        {children}
+        {cleanTextChildren(children)}
       </h2>
     ),
     h3: ({ children }) => (
       <h3 className="mb-3 mt-6 text-lg font-semibold leading-tight md:text-xl">
-        {children}
+        {cleanTextChildren(children)}
       </h3>
     ),
     h4: ({ children }) => (
       <h4 className="mb-2 mt-6 text-base font-semibold leading-tight md:text-lg">
-        {children}
+        {cleanTextChildren(children)}
       </h4>
     ),
     h5: ({ children }) => (
       <h5 className="mb-2 mt-4 text-base font-medium leading-tight">
-        {children}
+        {cleanTextChildren(children)}
       </h5>
     ),
     h6: ({ children }) => (
       <h6 className="mb-2 mt-4 text-sm font-medium uppercase leading-tight tracking-wide">
-        {children}
+        {cleanTextChildren(children)}
       </h6>
     ),
     blockquote: ({ children }) => (
@@ -65,12 +66,12 @@ export const RichText = {
         <span className="absolute -top-3 left-2 bg-background p-0.5 text-accent1">
           <Icon icon="quote" />
         </span>
-        {children}
+        {cleanTextChildren(children)}
       </blockquote>
     ),
     normal: ({ children }) => (
       <p className="mb-4 text-sm leading-7 text-secondary lg:text-base">
-        {children}
+        {cleanTextChildren(children)}
       </p>
     ),
   },
@@ -90,10 +91,10 @@ export const RichText = {
 
   listItem: {
     bullet: ({ children }) => (
-      <li className="leading-7 text-secondary">{children}</li>
+      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
     ),
     number: ({ children }) => (
-      <li className="leading-7 text-secondary">{children}</li>
+      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
     ),
   },
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/utils/useTranslation";
 import emailjs from "@emailjs/browser";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +9,7 @@ import { Container } from "../ui";
 export const SubscribeSection = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,11 +23,11 @@ export const SubscribeSection = () => {
       )
       .then(
         () => {
-          toast.success("Subscription successful!");
+          toast.success(t("subscribe.success"));
           setLoading(false);
         },
         () => {
-          toast.error("Subscription failed. Please try again.");
+          toast.error(t("subscribe.error"));
           setLoading(false);
         }
       );
@@ -35,9 +37,9 @@ export const SubscribeSection = () => {
   return (
     <Container className="mb-14 max-w-lg">
       <div className="size-full rounded-lg bg-accent1 px-4 py-5 md:px-10 md:py-8">
-        <p className="text-xl font-bold text-tertiary">Subscribe</p>
+        <p className="text-xl font-bold text-tertiary">{t("subscribe.title")}</p>
         <p className="text-sm text-tertiary-70">
-          Provide your email to stay updated with my blogs
+          {t("subscribe.description")}
         </p>
         <form
           onSubmit={handleSubmit}
@@ -49,7 +51,7 @@ export const SubscribeSection = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="Write your email"
+            placeholder={t("subscribe.placeholder")}
             className="animation w-full rounded-lg border-none px-4 py-2 outline-none bg-background-90 md:py-2.5"
           />
           <div className="absolute inset-y-0 right-0 p-0.5">
@@ -57,7 +59,7 @@ export const SubscribeSection = () => {
               type="submit"
               className="animation h-full rounded-md px-4 py-1 text-sm text-tertiary bg-accent1-90 hover:bg-accent1 md:text-base"
             >
-              {loading ? "Subscribing..." : "Subscribe"}
+              {loading ? t("subscribe.loading") : t("subscribe.button")}
             </button>
           </div>
         </form>

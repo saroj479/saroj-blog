@@ -187,8 +187,7 @@ Saroj Bartaula is a writer, filmmaker, and content creator. You can learn more a
     
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to process chat request',
-        details: error.message 
+        error: 'Failed to process chat request'
       }),
       { 
         status: 500,
