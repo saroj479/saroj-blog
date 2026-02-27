@@ -48,37 +48,41 @@ export function ChatWidget() {
     handleSubmit(e)
   }
 
-  // Convert markdown links to HTML with better error handling
+  // Convert markdown links to HTML — sanitize to prevent XSS
   const formatMessage = (content) => {
     try {
+      // First, escape HTML entities to prevent XSS injection
       let formatted = content
-        // Bold text
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        // Line breaks first
-        .replace(/\n/g, '<br />')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+
+      // Now safe to process markdown
+      // Bold text
+      formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      // Line breaks
+      formatted = formatted.replace(/\n/g, '<br />')
       
-      // Handle links more carefully - only process complete markdown links
-      // This regex checks for complete [text](url) patterns
+      // Handle markdown links — only allow safe URLs
       formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, url) => {
         try {
           const href = url.trim()
-          // Only process if we have a valid URL
-          if (href && href.length > 0) {
+          // Only allow http(s) and relative URLs — block javascript: etc
+          if (href && (href.startsWith('http') || href.startsWith('/'))) {
             const isExternal = href.startsWith('http')
             return `<a href="${href}" class="text-accent1 hover:underline font-medium" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}>${text}</a>`
           }
         } catch (err) {
           console.warn('Link formatting error:', err)
         }
-        // Return original if parsing fails
         return match
       })
       
       return formatted
     } catch (error) {
       console.error('Format error:', error)
-      // Fallback to plain text with line breaks only
-      return content.replace(/\n/g, '<br />')
+      return content.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br />')
     }
   }
 

@@ -48,7 +48,7 @@ const Blogs = async ({ searchParams }) => {
         </Suspense>
 
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
-          <div className="grid w-3/5 grid-cols-1 gap-4 sm:w-2/3">
+          <div className="grid w-full grid-cols-1 gap-4 sm:w-2/3">
             {blogs?.length === 0 && (
               <div className="w-full">
                 <T k="blog.notAvailable" fallback="Blogs are not available" />
@@ -58,7 +58,7 @@ const Blogs = async ({ searchParams }) => {
               <BlogItem key={blog?.slug} blog={blog} />
             ))}
           </div>
-          <div className="sticky top-20 w-2/5 rounded-xl border p-4 border-secondary-10 bg-accent1-5 sm:w-1/3">
+          <div className="sticky top-20 w-full rounded-xl border p-4 border-secondary-10 bg-accent1-5 sm:w-1/3">
             <h2 className="mb-4 text-lg font-bold">
               <T k="blog.exploreCategories" fallback="Explore Categories" />
             </h2>

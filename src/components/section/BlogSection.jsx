@@ -1,5 +1,6 @@
 import { headingFont } from "@/app/fonts";
 import { T } from "@/components/T";
+import { TranslatedText } from "@/components/TranslatedText";
 import { PARTIAL_BLOGS_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch, urlFor } from "@/utils/sanity";
@@ -30,11 +31,11 @@ export const BlogItem = ({ blog }) => {
           <h3
             className={`line-clamp-1 font-bold !leading-tight lg:text-lg ${headingFont.className}`}
           >
-            {blog?.title}
+            <TranslatedText text={blog?.title} />
           </h3>
           <BlogCategory categories={blog?.categories} />
           <p className="mt-3 line-clamp-3 text-sm text-secondary md:line-clamp-4 lg:line-clamp-2">
-            {blog?.shortDescription}
+            <TranslatedText text={blog?.shortDescription} />
           </p>
         </div>
       </Link>

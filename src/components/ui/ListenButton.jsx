@@ -7,64 +7,56 @@ import { portableTextToPlainText } from "@/utils/portableTextToPlainText";
 import { useTranslation } from "@/utils/useTranslation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const LANG_VOICE_MAP = {
-  en: "en-US",
-  es: "es-ES",
-  ne: "ne-NP",
-};
-
-const VOICE_FALLBACKS = {
-  ne: ["ne-NP", "hi-IN", "ne", "hi"],
-};
-
-// Max chars per utterance chunk — Chrome stops speaking after ~15s,
-// so we split into small chunks and play sequentially
-const CHUNK_SIZE = 200;
-
+/**
+ * ListenButton — plays blog content using Microsoft Edge neural TTS voices.
+ * Fetches audio from /api/tts (server-side), plays via HTML5 Audio element.
+ * Sounds natural and human-like across English, Spanish, and Nepali.
+ *
+ * Props:
+ *  - content: Portable Text array (original blog content)
+ *  - translatedText: plain text string (already translated, from TranslatedBlogContent)
+ */
 export const ListenButton = ({ content, translatedText }) => {
   const { language, mounted } = useLanguage();
   const { t } = useTranslation();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [isSupported, setIsSupported] = useState(true);
-  const [voiceAvailable, setVoiceAvailable] = useState(true);
+  const [status, setStatus] = useState("idle"); // idle | loading | playing | paused | error
   const [progress, setProgress] = useState(0);
-  const chunksRef = useRef([]);
-  const currentChunkRef = useRef(0);
-  const isStoppedRef = useRef(false);
-  const intervalRef = useRef(null);
-  const totalChunksRef = useRef(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef(null);
+  const blobUrlRef = useRef(null);
+  const abortRef = useRef(null);
+  const rafRef = useRef(null);
 
-  // Check if speech synthesis is supported and voices are available
+  // Cleanup on unmount
   useEffect(() => {
-    if (typeof window === "undefined" || !window.speechSynthesis) {
-      setIsSupported(false);
-      return;
+    return () => cleanup();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Reset when language changes
+  useEffect(() => {
+    if (status !== "idle") {
+      cleanup();
+      setStatus("idle");
+      setProgress(0);
+      setDuration(0);
     }
-
-    const checkVoices = () => {
-      const voices = speechSynthesis.getVoices();
-      if (voices.length === 0) return; // Not yet loaded
-      const langCode = LANG_VOICE_MAP[language] || language;
-      const fallbacks = VOICE_FALLBACKS[language] || [langCode];
-      const hasVoice = voices.some((v) =>
-        fallbacks.some(
-          (fb) =>
-            v.lang.startsWith(fb) ||
-            v.lang.toLowerCase().startsWith(fb.toLowerCase())
-        )
-      );
-      setVoiceAvailable(hasVoice || language === "en");
-    };
-
-    checkVoices();
-    speechSynthesis.addEventListener("voiceschanged", checkVoices);
-    return () => {
-      speechSynthesis.removeEventListener("voiceschanged", checkVoices);
-      stopSpeech();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language]);
+
+  const cleanup = useCallback(() => {
+    abortRef.current?.abort();
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.removeAttribute("src");
+      audioRef.current = null;
+    }
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current);
+      blobUrlRef.current = null;
+    }
+  }, []);
 
   const getTextToSpeak = useCallback(() => {
     if (translatedText && language !== "en") {
@@ -73,194 +65,159 @@ export const ListenButton = ({ content, translatedText }) => {
     return portableTextToPlainText(content);
   }, [content, translatedText, language]);
 
-  const findBestVoice = useCallback(() => {
-    const voices = speechSynthesis.getVoices();
-    const langCode = LANG_VOICE_MAP[language] || language;
-    const fallbacks = VOICE_FALLBACKS[language] || [langCode];
-
-    for (const fb of fallbacks) {
-      const voice = voices.find((v) => v.lang.startsWith(fb));
-      if (voice) return voice;
+  // Smooth progress tracking via requestAnimationFrame
+  const trackProgress = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || audio.paused) return;
+    if (audio.duration > 0) {
+      setProgress((audio.currentTime / audio.duration) * 100);
     }
-    return voices.find((v) =>
-      v.lang.toLowerCase().startsWith(language.toLowerCase())
-    ) || null;
-  }, [language]);
-
-  // Split text into sentences/chunks for reliable playback
-  const splitIntoChunks = useCallback((text) => {
-    if (!text) return [];
-    // Split by sentences first
-    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
-    const chunks = [];
-    let current = "";
-
-    for (const sentence of sentences) {
-      if (current.length + sentence.length > CHUNK_SIZE && current) {
-        chunks.push(current.trim());
-        current = sentence;
-      } else {
-        current += sentence;
-      }
-    }
-    if (current.trim()) chunks.push(current.trim());
-    return chunks;
+    rafRef.current = requestAnimationFrame(trackProgress);
   }, []);
 
-  const stopSpeech = useCallback(() => {
-    isStoppedRef.current = true;
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      speechSynthesis.cancel();
-    }
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    chunksRef.current = [];
-    currentChunkRef.current = 0;
-    setIsPlaying(false);
-    setIsPaused(false);
-    setProgress(0);
-  }, []);
-
-  // Speak one chunk, then call next on completion
-  const speakChunk = useCallback(
-    (chunkIndex) => {
-      if (
-        isStoppedRef.current ||
-        chunkIndex >= chunksRef.current.length
-      ) {
-        // All chunks done
-        setIsPlaying(false);
-        setProgress(100);
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
-        setTimeout(() => setProgress(0), 1500);
-        return;
-      }
-
-      const text = chunksRef.current[chunkIndex];
-      const utterance = new SpeechSynthesisUtterance(text);
-      const voice = findBestVoice();
-
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-      } else {
-        utterance.lang = LANG_VOICE_MAP[language] || language;
-      }
-
-      utterance.rate = 0.95;
-      utterance.pitch = 1;
-
-      utterance.onend = () => {
-        currentChunkRef.current = chunkIndex + 1;
-        const pct = ((chunkIndex + 1) / totalChunksRef.current) * 100;
-        setProgress(pct);
-        // Small delay between chunks for natural pacing
-        setTimeout(() => speakChunk(chunkIndex + 1), 50);
-      };
-
-      utterance.onerror = (event) => {
-        if (event.error !== "canceled" && event.error !== "interrupted") {
-          console.error("Speech error:", event.error, "on chunk", chunkIndex);
-          // Try next chunk on error
-          currentChunkRef.current = chunkIndex + 1;
-          setTimeout(() => speakChunk(chunkIndex + 1), 100);
-        }
-      };
-
-      speechSynthesis.speak(utterance);
-    },
-    [findBestVoice, language]
-  );
-
-  const playSpeech = useCallback(() => {
-    if (!isSupported || !voiceAvailable) return;
-
+  const fetchAndPlay = useCallback(async () => {
     const text = getTextToSpeak();
     if (!text) return;
 
-    // Reset state
-    isStoppedRef.current = false;
-    speechSynthesis.cancel();
-
-    const chunks = splitIntoChunks(text);
-    chunksRef.current = chunks;
-    totalChunksRef.current = chunks.length;
-    currentChunkRef.current = 0;
-
-    setIsPlaying(true);
-    setIsPaused(false);
+    setStatus("loading");
     setProgress(0);
 
-    // Small delay after cancel() — Chrome needs this to properly reset
-    setTimeout(() => {
-      if (!isStoppedRef.current) {
-        speakChunk(0);
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    try {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, language }),
+        signal: controller.signal,
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "TTS request failed");
       }
-    }, 100);
-  }, [isSupported, voiceAvailable, getTextToSpeak, splitIntoChunks, speakChunk]);
 
-  const togglePause = useCallback(() => {
-    if (isPaused) {
-      speechSynthesis.resume();
-      setIsPaused(false);
-    } else {
-      speechSynthesis.pause();
-      setIsPaused(true);
+      const blob = await res.blob();
+      if (controller.signal.aborted) return;
+
+      // Revoke old blob
+      if (blobUrlRef.current) URL.revokeObjectURL(blobUrlRef.current);
+      const url = URL.createObjectURL(blob);
+      blobUrlRef.current = url;
+
+      const audio = new Audio(url);
+      audioRef.current = audio;
+
+      audio.addEventListener("loadedmetadata", () => setDuration(audio.duration));
+      audio.addEventListener("ended", () => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        setStatus("idle");
+        setProgress(0);
+        setDuration(0);
+      });
+      audio.addEventListener("error", () => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        setStatus("error");
+      });
+
+      await audio.play();
+      setStatus("playing");
+      trackProgress();
+    } catch (err) {
+      if (err.name === "AbortError") return;
+      console.error("TTS error:", err);
+      setStatus("error");
     }
-  }, [isPaused]);
+  }, [getTextToSpeak, language, trackProgress]);
 
-  if (!mounted || !isSupported) return null;
+  const togglePlayPause = useCallback(() => {
+    if (status === "playing" && audioRef.current) {
+      audioRef.current.pause();
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      setStatus("paused");
+    } else if (status === "paused" && audioRef.current) {
+      audioRef.current.play();
+      setStatus("playing");
+      trackProgress();
+    } else if (status === "idle" || status === "error") {
+      fetchAndPlay();
+    }
+  }, [status, fetchAndPlay, trackProgress]);
+
+  const stopPlayback = useCallback(() => {
+    cleanup();
+    setStatus("idle");
+    setProgress(0);
+    setDuration(0);
+  }, [cleanup]);
+
+  if (!mounted) return null;
 
   const text = getTextToSpeak();
   const wordCount = text ? text.split(/\s+/).length : 0;
   const readingMinutes = Math.max(1, Math.ceil(wordCount / 150));
+  const isActive = status === "playing" || status === "paused" || status === "loading";
 
   return (
     <div className="mb-6 overflow-hidden rounded-lg border border-secondary-10 bg-accent1-5">
       <div className="flex items-center gap-3 p-3">
-        {!isPlaying ? (
-          <button
-            onClick={playSpeech}
-            disabled={!voiceAvailable}
-            aria-label={t("listen.play")}
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent1 text-white transition-colors hover:bg-accent1-80 disabled:cursor-not-allowed disabled:opacity-50"
-          >
+        {/* Play / Pause / Loading button */}
+        <button
+          onClick={togglePlayPause}
+          disabled={status === "loading"}
+          aria-label={
+            status === "playing"
+              ? t("listen.pause")
+              : status === "loading"
+                ? "Generating audio..."
+                : t("listen.play")
+          }
+          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent1 text-white transition-colors hover:bg-accent1-80 disabled:cursor-wait disabled:opacity-70"
+        >
+          {status === "loading" ? (
+            <LoadingSpinner />
+          ) : status === "playing" ? (
+            <PauseIcon />
+          ) : (
             <PlayIcon />
-          </button>
-        ) : (
-          <button
-            onClick={togglePause}
-            aria-label={isPaused ? t("listen.play") : t("listen.pause")}
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent1 text-white transition-colors hover:bg-accent1-80"
-          >
-            {isPaused ? <PlayIcon /> : <PauseIcon />}
-          </button>
-        )}
+          )}
+        </button>
 
+        {/* Info + progress bar */}
         <div className="flex-1">
           <div className="flex items-center justify-between">
             <span className="flex items-center gap-1.5 text-sm font-medium">
               <HeadphoneIcon />
-              {t("listen.title")}
+              {status === "loading"
+                ? language === "es"
+                  ? "Generando audio..."
+                  : language === "ne"
+                    ? "अडियो बनाउँदै..."
+                    : "Generating audio..."
+                : t("listen.title")}
             </span>
-            <span className="text-xs text-secondary">~{readingMinutes} min</span>
+            <span className="text-xs text-secondary">
+              {duration > 0
+                ? formatTime(audioRef.current?.currentTime || 0) +
+                  " / " +
+                  formatTime(duration)
+                : `~${readingMinutes} min`}
+            </span>
           </div>
           <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-secondary-10">
             <div
-              className="h-full rounded-full bg-accent1 transition-all duration-300"
+              className="h-full rounded-full bg-accent1 transition-all duration-150"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
-        {isPlaying && (
+        {/* Stop button */}
+        {isActive && (
           <button
-            onClick={stopSpeech}
+            onClick={stopPlayback}
             aria-label={t("listen.stop")}
             className="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary-10 transition-colors hover:bg-secondary-20"
           >
@@ -269,14 +226,25 @@ export const ListenButton = ({ content, translatedText }) => {
         )}
       </div>
 
-      {!voiceAvailable && (
+      {/* Error recovery */}
+      {status === "error" && (
         <div className="border-t border-secondary-10 px-3 py-2 text-xs text-secondary">
-          {t("listen.unavailable")}
+          {language === "es"
+            ? "Error al generar audio. Toca reproducir para reintentar."
+            : language === "ne"
+              ? "अडियो बनाउन सकिएन। पुन: प्रयास गर्न प्ले थिच्नुहोस्।"
+              : "Audio generation failed. Tap play to retry."}
         </div>
       )}
     </div>
   );
 };
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
 
 function PlayIcon() {
   return (
@@ -316,6 +284,20 @@ function HeadphoneIcon() {
     >
       <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
       <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+    </svg>
+  );
+}
+
+function LoadingSpinner() {
+  return (
+    <svg
+      className="size-4 animate-spin"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
     </svg>
   );
 }

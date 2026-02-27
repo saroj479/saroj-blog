@@ -10,6 +10,23 @@ import { NextResponse } from "next/server";
  * Body: { text: string, sourceLang: string, targetLang: string }
  */
 
+// Simple rate limiter: max 30 translation requests per IP per minute
+const rateLimitMap = new Map();
+const RATE_LIMIT = 30;
+const RATE_WINDOW = 60_000;
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now - entry.start > RATE_WINDOW) {
+    rateLimitMap.set(ip, { start: now, count: 1 });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
 // Simple in-memory LRU cache (survives across requests in the same serverless instance)
 const cache = new Map();
 const MAX_CACHE = 200;
@@ -36,6 +53,15 @@ function setCache(key, value) {
 
 export async function POST(request) {
   try {
+    // Rate limit check
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment." },
+        { status: 429 }
+      );
+    }
+
     const { text, sourceLang = "en", targetLang } = await request.json();
 
     if (!text || !targetLang) {

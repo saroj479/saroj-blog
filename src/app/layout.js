@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Footer, Navbar } from "@/components/ui";
 import LanguageProvider from "@/providers/LanguageProvider";
 import Theme from "@/providers/ThemeProvider";
@@ -26,6 +27,12 @@ export const metadata = {
   },
   description:
     "Welcome to my blog, a space where I share my insights on various topics including science, technology, Effective Accelerationism, machine learning, space travel, startup experiences, and personal stories. Each post offers a glimpse into my mind and my journey.",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({ children }) {
@@ -79,16 +86,18 @@ export default function RootLayout({ children }) {
           }}
         />
         <ToastContainer />
-        <LanguageProvider>
-          <Theme>
-            <Navbar />
-            <main>{children}</main>
-            <SpeedInsights />
-            <Analytics /> {/* Vercel Analytics */}
-            <Footer />
-            <LazyChatWidget />
-          </Theme>
-        </LanguageProvider>
+        <ErrorBoundary>
+          <LanguageProvider>
+            <Theme>
+              <Navbar />
+              <main>{children}</main>
+              <SpeedInsights />
+              <Analytics /> {/* Vercel Analytics */}
+              <Footer />
+              <LazyChatWidget />
+            </Theme>
+          </LanguageProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

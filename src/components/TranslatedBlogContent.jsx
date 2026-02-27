@@ -2,6 +2,7 @@
 
 /* eslint-disable tailwindcss/classnames-order */
 
+import { ListenButton } from "@/components/ui/ListenButton";
 import { useLanguage } from "@/providers/LanguageProvider";
 import { portableTextToBlocks } from "@/utils/portableTextToPlainText";
 import { PortableText } from "@portabletext/react";
@@ -11,15 +12,17 @@ import { RichText } from "./ui/RichText";
 const SEPARATOR = " ||| ";
 
 /**
- * Client wrapper for blog content that handles translation.
+ * Client wrapper for blog content that handles translation + listen button.
  * When language is "en", renders Portable Text normally via PortableText.
  * When language changes, combines all text into ONE API request (avoids 429),
  * then renders the translated version preserving paragraph spacing.
+ * The ListenButton is integrated here so it can receive translated text for audio.
  * Caches translations in localStorage.
  */
-export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) => {
+export const TranslatedBlogContent = ({ content, slug, title: originalTitle, showListenButton = false }) => {
   const { language, mounted } = useLanguage();
   const [translatedBlocks, setTranslatedBlocks] = useState(null);
+  const [translatedPlainText, setTranslatedPlainText] = useState(null);
   const [isTranslating, setIsTranslating] = useState(false);
   const [error, setError] = useState(null);
   const abortRef = useRef(null);
@@ -35,16 +38,19 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
 
     if (!mounted || language === "en") {
       setTranslatedBlocks(null);
+      setTranslatedPlainText(null);
       setError(null);
       return;
     }
 
     // Check cache first
     const cachedContent = localStorage.getItem(getCacheKey("content"));
+    const cachedPlainText = localStorage.getItem(getCacheKey("plaintext"));
 
     if (cachedContent) {
       try {
         setTranslatedBlocks(JSON.parse(cachedContent));
+        if (cachedPlainText) setTranslatedPlainText(cachedPlainText);
         return;
       } catch {
         // Cache corrupted, re-translate
@@ -67,7 +73,6 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
       const textBlocks = portableTextToBlocks(content);
 
       // Combine title + all blocks into ONE string separated by |||
-      // This avoids making many API requests and hitting 429 rate limits
       const allTexts = [originalTitle, ...textBlocks.map((b) => b.text)];
       const combinedText = allTexts.join(SEPARATOR);
 
@@ -100,8 +105,13 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
 
       setTranslatedBlocks(translated);
 
+      // Build plain text for audio playback
+      const plainText = translated.map((b) => b.translatedText).join(". ");
+      setTranslatedPlainText(plainText);
+
       // Cache
       localStorage.setItem(getCacheKey("content"), JSON.stringify(translated));
+      localStorage.setItem(getCacheKey("plaintext"), plainText);
     } catch (err) {
       if (err.name === "AbortError") return;
       console.error("Translation failed:", err);
@@ -116,9 +126,12 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
   // English or initial state: render original Portable Text with full RichText formatting
   if (language === "en" || (!translatedBlocks && !isTranslating)) {
     return (
-      <article className="space-y-0">
-        <PortableText value={content} components={RichText} />
-      </article>
+      <>
+        {showListenButton && <ListenButton content={content} />}
+        <article className="space-y-0">
+          <PortableText value={content} components={RichText} />
+        </article>
+      </>
     );
   }
 
@@ -132,6 +145,7 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
             {language === "es" ? "Traduciendo..." : "अनुवाद गर्दै..."}
           </span>
         </div>
+        {showListenButton && <ListenButton content={content} />}
         <article className="space-y-0 opacity-50">
           <PortableText value={content} components={RichText} />
         </article>
@@ -146,6 +160,7 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
         <div className="mb-4 rounded-lg border border-secondary-20 bg-secondary-5 px-4 py-2 text-sm text-secondary">
           {error}
         </div>
+        {showListenButton && <ListenButton content={content} />}
         <article className="space-y-0">
           <PortableText value={content} components={RichText} />
         </article>
@@ -153,9 +168,12 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle }) =
     );
   }
 
-  // Render translated content with proper spacing (matching RichText styles)
+  // Render translated content with listen button that speaks translated text
   return (
     <>
+      {showListenButton && (
+        <ListenButton content={content} translatedText={translatedPlainText} />
+      )}
       <article>
         {translatedBlocks.map((block, index) => {
           const BlockTag = getBlockTag(block.style);

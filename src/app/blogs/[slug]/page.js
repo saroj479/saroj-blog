@@ -1,7 +1,8 @@
 import { headingFont } from "@/app/fonts";
 import { BlogCategory } from "@/components/BlogCategory";
 import { TranslatedBlogContent } from "@/components/TranslatedBlogContent";
-import { CustomImage, Icon, ListenButton, Section } from "@/components/ui";
+import { TranslatedText } from "@/components/TranslatedText";
+import { CustomImage, Icon, Section } from "@/components/ui";
 import { BLOG_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch, urlFor } from "@/utils/sanity";
@@ -19,7 +20,7 @@ const BlogPage = async ({ params }) => {
         <h1
           className={`mb-4 mt-3 text-balance text-2xl font-extrabold md:text-4xl ${headingFont.className}`}
         >
-          {blog?.title}
+          <TranslatedText text={blog?.title} />
         </h1>
         <BlogCategory categories={blog?.categories} size="lg" />
         <div className="relative mb-8 mt-6 h-56 rounded-lg md:h-72 xl:-mx-14 xl:h-96">
@@ -29,11 +30,11 @@ const BlogPage = async ({ params }) => {
             className="absolute !size-full rounded-lg shadow-sm"
           />
         </div>
-        <ListenButton content={blog?.content} />
         <TranslatedBlogContent
           content={blog?.content}
           slug={params.slug}
           title={blog?.title}
+          showListenButton
         />
       </div>
     </Section>
