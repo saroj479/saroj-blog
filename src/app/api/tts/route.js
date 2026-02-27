@@ -1,5 +1,9 @@
 import { MsEdgeTTS, OUTPUT_FORMAT } from "msedge-tts";
 
+// Force Node.js runtime — msedge-tts needs WebSocket which doesn't work in Edge runtime
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 /**
  * Text-to-Speech API using Microsoft Edge neural voices.
  * Free, no API key needed. Produces natural human-like speech.

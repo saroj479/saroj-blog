@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // msedge-tts uses the 'ws' WebSocket library which must run as native Node.
+  // Webpack bundling breaks its native C++ addons (bufferUtil, etc.).
+  // In Next.js 14 this must be under 'experimental'.
+  experimental: {
+    serverComponentsExternalPackages: ['msedge-tts', 'ws'],
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.sanity.io' },

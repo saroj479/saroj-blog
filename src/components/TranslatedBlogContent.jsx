@@ -4,6 +4,7 @@
 
 import { ListenButton } from "@/components/ui/ListenButton";
 import { useLanguage } from "@/providers/LanguageProvider";
+import { cleanEmDashes } from "@/utils/helpers";
 import { portableTextToBlocks } from "@/utils/portableTextToPlainText";
 import { PortableText } from "@portabletext/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -100,14 +101,14 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle, sho
 
       const translated = textBlocks.map((block, i) => ({
         ...block,
-        translatedText: translatedParts[i + 1]?.trim() || block.text,
+        translatedText: cleanEmDashes(translatedParts[i + 1]?.trim() || block.text),
       }));
 
       setTranslatedBlocks(translated);
 
       // Build plain text for audio playback
       const plainText = translated.map((b) => b.translatedText).join(". ");
-      setTranslatedPlainText(plainText);
+      setTranslatedPlainText(cleanEmDashes(plainText));
 
       // Cache
       localStorage.setItem(getCacheKey("content"), JSON.stringify(translated));
