@@ -6,8 +6,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(req) {
   try {
     const { amount } = await req.json();
-    if (!amount || amount < 1) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+    if (!amount || amount < 1 || amount > 500) {
+      return NextResponse.json({ error: 'Invalid amount (must be €1–€500)' }, { status: 400 });
     }
 
     const session = await stripe.checkout.sessions.create({

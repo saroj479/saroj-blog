@@ -1,3 +1,4 @@
+import { cleanTextChildren } from "@/utils/helpers";
 import { urlFor } from "@/utils/sanity";
 import Link from "next/link";
 import { CustomImage, Icon } from ".";
@@ -6,7 +7,7 @@ export const RichText = {
   types: {
     image: ({ value }) => {
       return (
-        <div className="my-4">
+        <div className="my-6">
           <div className="h-44 rounded-lg sm:h-48">
             <CustomImage
               src={urlFor(value)}
@@ -14,26 +15,89 @@ export const RichText = {
               className={`mx-auto !size-full rounded-lg shadow-lg`}
             />
           </div>
-          {value?.caption && <small>{value?.caption}</small>}
+          {value?.caption && (
+            <p className="mt-2 text-center text-sm italic text-secondary">
+              {value.caption}
+            </p>
+          )}
         </div>
       );
     },
+    code: ({ value }) => (
+      <pre className="my-6 overflow-x-auto rounded-lg bg-neutral-900 p-4 text-sm text-white">
+        <code>{value.code}</code>
+      </pre>
+    ),
   },
 
   block: {
-    h1: ({ children }) => <h1 className="text-xl">{children}</h1>,
+    h1: ({ children }) => (
+      <h1 className="mb-4 mt-8 text-2xl font-bold leading-tight md:text-3xl">
+        {cleanTextChildren(children)}
+      </h1>
+    ),
+    h2: ({ children }) => (
+      <h2 className="mb-3 mt-8 text-xl font-semibold leading-tight md:text-2xl">
+        {cleanTextChildren(children)}
+      </h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className="mb-3 mt-6 text-lg font-semibold leading-tight md:text-xl">
+        {cleanTextChildren(children)}
+      </h3>
+    ),
+    h4: ({ children }) => (
+      <h4 className="mb-2 mt-6 text-base font-semibold leading-tight md:text-lg">
+        {cleanTextChildren(children)}
+      </h4>
+    ),
+    h5: ({ children }) => (
+      <h5 className="mb-2 mt-4 text-base font-medium leading-tight">
+        {cleanTextChildren(children)}
+      </h5>
+    ),
+    h6: ({ children }) => (
+      <h6 className="mb-2 mt-4 text-sm font-medium uppercase leading-tight tracking-wide">
+        {cleanTextChildren(children)}
+      </h6>
+    ),
     blockquote: ({ children }) => (
       <blockquote className="relative mx-auto my-8 max-w-sm rounded-lg border px-8 py-4 text-center italic border-accent1-40">
         <span className="absolute -top-3 left-2 bg-background p-0.5 text-accent1">
           <Icon icon="quote" />
         </span>
-        {children}
+        {cleanTextChildren(children)}
       </blockquote>
     ),
-    p: ({ children }) => (
-      <p className="mt-6 text-sm lg:text-base">{children}</p>
+    normal: ({ children }) => (
+      <p className="mb-4 text-sm leading-7 text-secondary lg:text-base">
+        {cleanTextChildren(children)}
+      </p>
     ),
   },
+
+  list: {
+    bullet: ({ children }) => (
+      <ul className="mb-6 ml-6 list-disc space-y-2 text-sm lg:text-base">
+        {children}
+      </ul>
+    ),
+    number: ({ children }) => (
+      <ol className="mb-6 ml-6 list-decimal space-y-2 text-sm lg:text-base">
+        {children}
+      </ol>
+    ),
+  },
+
+  listItem: {
+    bullet: ({ children }) => (
+      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
+    ),
+    number: ({ children }) => (
+      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
+    ),
+  },
+
   marks: {
     link: ({ children, value }) => {
       const selfLink = value.href.startsWith("/");
@@ -50,5 +114,14 @@ export const RichText = {
         </Link>
       );
     },
+    strong: ({ children }) => (
+      <strong className="font-semibold">{children}</strong>
+    ),
+    em: ({ children }) => <em className="italic">{children}</em>,
+    code: ({ children }) => (
+      <code className="rounded bg-neutral-200 px-1.5 py-0.5 font-mono text-sm dark:bg-neutral-800">
+        {children}
+      </code>
+    ),
   },
 };
