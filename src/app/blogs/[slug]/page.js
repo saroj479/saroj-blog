@@ -7,6 +7,17 @@ import { BLOG_QUERY } from "@/constants/sanity-queries";
 import { formatDate } from "@/utils/helpers";
 import { sanityFetch, urlFor } from "@/utils/sanity";
 
+export async function generateMetadata({ params }) {
+  const blog = await sanityFetch({ query: BLOG_QUERY, params });
+  return {
+    title: blog?.title,
+    description: blog?.shortDescription,
+    alternates: {
+      canonical: `/blogs/${params.slug}`,
+    },
+  };
+}
+
 const BlogPage = async ({ params }) => {
   const blog = await sanityFetch({ query: BLOG_QUERY, params });
 
