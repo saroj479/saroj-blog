@@ -21,12 +21,16 @@ const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 const GA_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:3000'),
   title: {
     template: "%s | Saroj Bartaula",
     default: "Saroj Bartaula: A personal blog",
   },
   description:
     "Welcome to my blog, a space where I share my insights on various topics including science, technology, Effective Accelerationism, machine learning, space travel, startup experiences, and personal stories. Each post offers a glimpse into my mind and my journey.",
+  alternates: {
+    canonical: './',
+  },
 };
 
 export const viewport = {
