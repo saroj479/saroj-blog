@@ -30,7 +30,7 @@ export const LanguageSwitcher = () => {
   }, [open]);
 
   if (!mounted) {
-    return <div className="h-10 w-16 rounded-full bg-accent1-10" />;
+    return <div className="h-11 w-20 rounded-full bg-accent1-10" />;
   }
 
   const currentLang = languages.find((l) => l.code === language) || languages[0];
@@ -42,7 +42,7 @@ export const LanguageSwitcher = () => {
         aria-label="Switch language"
         aria-expanded={open}
         aria-haspopup="listbox"
-        className="border-primary/10 bg-background/90 flex items-center gap-1.5 rounded-full border px-3 py-2 text-sm font-medium text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-colors hover:border-accent1/25 hover:bg-accent1/10"
+        className="border-primary/10 bg-background/90 flex min-h-11 items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm font-medium text-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.45)] transition-colors hover:border-accent1/25 hover:bg-accent1/10"
       >
         <GlobeIcon />
         <span className="hidden sm:inline">{currentLang.flag}</span>
@@ -54,7 +54,7 @@ export const LanguageSwitcher = () => {
         <div
           role="listbox"
           aria-label="Select language"
-          className="border-primary/10 bg-background absolute right-0 top-full z-50 mt-2 min-w-[180px] overflow-hidden rounded-3xl border shadow-[0_18px_50px_rgba(10,18,28,0.14)] backdrop-blur-xl"
+          className="border-primary/10 bg-background absolute right-0 top-full z-50 mt-2 min-w-[200px] overflow-hidden rounded-3xl border shadow-[0_18px_50px_rgba(10,18,28,0.14)] backdrop-blur-xl"
         >
           {languages.map((lang) => (
             <button

@@ -14,7 +14,7 @@ export const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 border-b backdrop-blur-xl will-change-transform bg-background-80 border-primary-10">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(var(--accent-color-1-rgb),0.7),transparent)]" />
-      <Container className="flex items-center justify-between py-2 md:py-3">
+      <Container className="flex items-center justify-between py-2.5 md:py-3">
         <div className="flex items-center gap-3">
           <Logo className="!w-24 bg-transparent md:!w-28" />
           <div className="hidden md:block">
@@ -31,7 +31,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href={`/blogs`}
-                className="animation hover:bg-accent1/10 rounded-full px-4 py-2 text-sm font-medium tracking-[0.14em] text-secondary hover:text-primary"
+                className="animation hover:bg-accent1/10 rounded-full px-4 py-2.5 text-sm font-medium tracking-[0.14em] text-secondary hover:text-primary"
               >
                 Blogs
               </Link>
@@ -43,12 +43,12 @@ export const Navbar = () => {
             href="https://milkywaymarket.shop/"
             target="_blank"
             rel="noopener noreferrer"
-            className="border-accent1/20 bg-accent1/10 hover:bg-accent1/15 rounded-full border px-4 py-2 text-sm font-semibold tracking-[0.12em] text-primary transition hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(var(--accent-color-1-rgb),0.12)]"
+            className="border-accent1/20 bg-accent1/10 hover:bg-accent1/15 rounded-full border px-4 py-2.5 text-sm font-semibold tracking-[0.12em] text-primary transition hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(var(--accent-color-1-rgb),0.12)]"
           >
             Shop
           </a>
           <Link href="/buy-me-a-coffee">
-            <button className="rounded-full bg-[linear-gradient(135deg,rgba(var(--primary-text-color-rgb),0.96),rgba(var(--accent-color-1-rgb),0.82))] px-4 py-2 text-sm font-semibold tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(10,18,28,0.16)]">
+            <button className="rounded-full bg-[linear-gradient(135deg,rgba(var(--primary-text-color-rgb),0.96),rgba(var(--accent-color-1-rgb),0.82))] px-4 py-2.5 text-sm font-semibold tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(10,18,28,0.16)]">
               Buy Me a Coffee
             </button>
           </Link>
@@ -57,7 +57,7 @@ export const Navbar = () => {
         {/* Mobile hamburger button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="border-primary/10 bg-background/90 hover:bg-accent1/10 flex size-10 items-center justify-center rounded-2xl border transition md:hidden"
+          className="border-primary/10 bg-background/90 hover:bg-accent1/10 flex size-11 items-center justify-center rounded-2xl border transition md:hidden"
           aria-label="Toggle menu"
         >
           {isOpen ? (
@@ -86,7 +86,7 @@ export const Navbar = () => {
             >
               Blogs
             </Link>
-            <div className="flex items-center gap-3 px-1">
+            <div className="flex items-center gap-3 p-1">
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
