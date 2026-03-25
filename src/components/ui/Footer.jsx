@@ -1,38 +1,50 @@
+import { headingFont } from "@/app/fonts";
 import { T } from "@/components/T";
 import { Container, Logo, SocialButtons } from ".";
 
 export const Footer = () => {
   return (
-    <footer className="bg-accent1-5">
-      <Container className="grid place-content-center py-8">
-        <div className="mb-4 flex flex-col items-center">
-          <Logo />
+    <footer className="relative mt-16 overflow-hidden border-t bg-[linear-gradient(180deg,rgba(var(--background-color-rgb),0.35),rgba(var(--tertiary-color-rgb),0.88))] border-primary-10">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top,rgba(var(--accent-color-1-rgb),0.14),transparent_60%)]" />
+      <Container className="relative grid gap-8 py-10 md:grid-cols-[1.2fr_1fr] md:items-end md:py-14">
+        <div className="max-w-xl">
+          <Logo className="!w-24 bg-transparent md:!w-32" />
+          <p className="mt-4 text-[11px] uppercase tracking-[0.34em] text-secondary">
+            Personal archive
+          </p>
           <T
             k="footer.tagline"
             fallback="The Man on a Mission"
             as="p"
-            className="mt-1 font-medium"
+            className={`${headingFont.className} mt-2 text-2xl tracking-[0.08em] text-primary md:text-3xl`}
           />
+          <p className="mt-3 max-w-md text-sm leading-7 text-secondary md:text-base">
+            Thoughts on technology, storytelling, science, and making meaningful things that move ideas forward.
+          </p>
         </div>
-        <SocialButtons />
+        <div className="border-primary/10 bg-background/75 rounded-[28px] border p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.45)]">
+          <p className="text-[11px] uppercase tracking-[0.32em] text-secondary">Find Saroj</p>
+          <SocialButtons />
+          <a
+            href="https://milkywaymarket.shop/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-accent1/20 bg-accent1/10 hover:bg-accent1/15 mt-5 inline-flex rounded-full border px-4 py-2 text-sm font-semibold tracking-[0.12em] text-primary transition hover:-translate-y-0.5"
+          >
+            <T k="footer.shopLink" fallback="Shop at Milky Way Market" />
+          </a>
+        </div>
       </Container>
-      <Container className="rounded-t-2xl py-1 text-center bg-background-80">
-            <div className="flex flex-col items-center">
-              <T
-                k="footer.copyright"
-                fallback="Copyright © 2024. Saroj Bartaula."
-                as="span"
-                className="text-sm"
-              />
-              <a
-                href="https://milkywaymarket.shop/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 text-sm text-accent1 underline"
-              >
-                <T k="footer.shopLink" fallback="Shop at Milky Way Market" />
-              </a>
-            </div>
+      <Container className="border-primary/10 relative flex flex-col items-center justify-between gap-2 border-t py-5 text-center md:flex-row md:text-left">
+        <T
+          k="footer.copyright"
+          fallback="Copyright © 2024. Saroj Bartaula."
+          as="span"
+          className="text-sm text-secondary"
+        />
+        <p className="text-secondary/80 text-[11px] uppercase tracking-[0.28em]">
+          Built for clarity across laptop and mobile
+        </p>
       </Container>
     </footer>
   );

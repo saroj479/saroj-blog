@@ -8,7 +8,7 @@ import dynamic from "next/dynamic";
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { bodyFont, nepaliFont } from "./fonts";
+import { bodyFont, headingFont, nepaliFont } from "./fonts";
 import "./globals.css";
 
 // Lazy-load heavy client widgets — not needed for initial paint
@@ -80,7 +80,7 @@ export default function RootLayout({ children }) {
           </>
         )}
       </head>
-      <body className={`${bodyFont.className} ${nepaliFont.variable}`}>
+      <body className={`${bodyFont.variable} ${bodyFont.className} ${headingFont.variable} ${nepaliFont.variable} antialiased`}>
         <noscript
           dangerouslySetInnerHTML={{
             __html: `
