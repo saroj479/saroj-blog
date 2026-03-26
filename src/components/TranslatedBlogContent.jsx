@@ -224,9 +224,9 @@ function getBlockClass(style) {
     case "h6":
       return "mb-2 mt-4 text-sm font-medium uppercase leading-tight tracking-wide";
     case "blockquote":
-      return "relative mx-auto my-8 max-w-sm rounded-lg border border-accent1-40 px-8 py-4 text-center italic";
+      return "relative mx-auto my-8 max-w-sm rounded-lg border border-accent1-40 px-8 py-4 text-center italic whitespace-pre-wrap";
     default:
-      return "mb-5 text-sm leading-7 text-secondary lg:text-base";
+      return "mb-5 whitespace-pre-wrap text-sm leading-7 text-secondary lg:text-base";
   }
 }
 

@@ -21,7 +21,7 @@ export const HeroSection = () => {
             <div className="animate-float-slow bg-accent1/20 absolute -left-5 top-1/3 h-32 w-40 -rotate-45 rounded-full blur-2xl" />
             <div className="bg-background/80 absolute right-12 top-3 size-8 rounded-full border border-white/60" />
             <div className="absolute bottom-6 right-14 size-4 rounded-full bg-accent1 shadow-[0_0_18px_rgba(var(--accent-color-1-rgb),0.65)]" />
-            <div className="border-primary/10 bg-background/90 absolute -bottom-5 left-6 rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-secondary shadow-[0_10px_24px_rgba(10,18,28,0.08)]">
+            <div className="border-primary/10 bg-background/90 absolute -bottom-5 left-4 rounded-full border px-4 py-2 text-[10px] uppercase tracking-[0.12em] text-secondary shadow-[0_10px_24px_rgba(10,18,28,0.08)] md:left-6 md:text-[11px] md:tracking-[0.18em]">
               Writer · Filmmaker · Builder
             </div>
           </div>

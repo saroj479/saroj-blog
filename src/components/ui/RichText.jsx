@@ -62,7 +62,7 @@ export const RichText = {
       </h6>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="relative mx-auto my-8 max-w-sm rounded-lg border px-8 py-4 text-center italic border-accent1-40">
+      <blockquote className="relative mx-auto my-8 max-w-sm whitespace-pre-wrap rounded-lg border px-8 py-4 text-center italic border-accent1-40">
         <span className="absolute -top-3 left-2 bg-background p-0.5 text-accent1">
           <Icon icon="quote" />
         </span>
@@ -70,7 +70,7 @@ export const RichText = {
       </blockquote>
     ),
     normal: ({ children }) => (
-      <p className="mb-4 text-sm leading-7 text-secondary lg:text-base">
+      <p className="mb-4 whitespace-pre-wrap text-sm leading-7 text-secondary lg:text-base">
         {cleanTextChildren(children)}
       </p>
     ),
@@ -91,10 +91,10 @@ export const RichText = {
 
   listItem: {
     bullet: ({ children }) => (
-      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
+      <li className="whitespace-pre-wrap leading-7 text-secondary">{cleanTextChildren(children)}</li>
     ),
     number: ({ children }) => (
-      <li className="leading-7 text-secondary">{cleanTextChildren(children)}</li>
+      <li className="whitespace-pre-wrap leading-7 text-secondary">{cleanTextChildren(children)}</li>
     ),
   },
 
