@@ -73,8 +73,10 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle, sho
     try {
       const textBlocks = portableTextToBlocks(content);
 
-      // Combine title + all blocks into ONE string separated by |||
-      const allTexts = [originalTitle, ...textBlocks.map((b) => b.text)];
+      const blocksToTranslate = textBlocks.filter((block) => block.text.trim().length > 0);
+
+      // Combine title + all non-empty blocks into ONE string separated by |||
+      const allTexts = [originalTitle, ...blocksToTranslate.map((b) => b.text)];
       const combinedText = allTexts.join(SEPARATOR);
 
       const res = await fetch("/api/translate", {
@@ -98,16 +100,32 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle, sho
 
       // Split translated text back into parts (first part is title, rest are blocks)
       const translatedParts = data.translatedText.split(SEPARATOR);
+      let translateIndex = 0;
 
-      const translated = textBlocks.map((block, i) => ({
-        ...block,
-        translatedText: cleanEmDashes(translatedParts[i + 1]?.trim() || block.text),
-      }));
+      const translated = textBlocks.map((block) => {
+        if (block.text.trim().length === 0) {
+          return {
+            ...block,
+            translatedText: block.text,
+          };
+        }
+
+        const translatedText = translatedParts[++translateIndex];
+        return {
+          ...block,
+          translatedText: cleanEmDashes(
+            translatedText !== undefined ? translatedText : block.text
+          ),
+        };
+      });
 
       setTranslatedBlocks(translated);
 
       // Build plain text for audio playback
-      const plainText = translated.map((b) => b.translatedText).join(". ");
+      const plainText = translated
+        .map((b) => b.translatedText)
+        .filter((t) => t.trim())
+        .join(". ");
       setTranslatedPlainText(cleanEmDashes(plainText));
 
       // Cache
@@ -179,9 +197,10 @@ export const TranslatedBlogContent = ({ content, slug, title: originalTitle, sho
         {translatedBlocks.map((block, index) => {
           const BlockTag = getBlockTag(block.style);
           const blockClass = getBlockClass(block.style);
+          const hasContent = block.translatedText?.trim().length > 0;
           return (
             <BlockTag key={block.key || index} className={blockClass}>
-              {block.translatedText}
+              {hasContent ? block.translatedText : "\u00A0"}
             </BlockTag>
           );
         })}

@@ -1,7 +1,18 @@
 import { cleanTextChildren } from "@/utils/helpers";
 import { urlFor } from "@/utils/sanity";
 import Link from "next/link";
+import { Children } from "react";
 import { CustomImage, Icon } from ".";
+
+function getChildText(children) {
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === "string") return child;
+      if (child?.props?.children) return getChildText(child.props.children);
+      return "";
+    })
+    .join("");
+}
 
 export const RichText = {
   types: {
@@ -69,11 +80,15 @@ export const RichText = {
         {cleanTextChildren(children)}
       </blockquote>
     ),
-    normal: ({ children }) => (
-      <p className="mb-4 whitespace-pre-wrap text-sm leading-7 text-secondary lg:text-base">
-        {cleanTextChildren(children)}
-      </p>
-    ),
+    normal: ({ children }) => {
+      const text = getChildText(children);
+      const isEmpty = text.trim().length === 0;
+      return (
+        <p className="mb-4 whitespace-pre-wrap text-sm leading-7 text-secondary lg:text-base">
+          {isEmpty ? "\u00A0" : cleanTextChildren(children)}
+        </p>
+      );
+    },
   },
 
   list: {
